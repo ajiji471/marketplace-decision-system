@@ -172,6 +172,15 @@ function getRankClass(rank) {
       : "bg-muted text-muted-foreground"
   );
 }
+function exportPdf() {
+    const params = new URLSearchParams({
+        method: form.method,
+        category: form.category,
+        weights: JSON.stringify(form.weights),
+    }).toString()
+    
+    window.open(route('spk.export-pdf') + '?' + params, '_blank')
+}
 </script>
 
 <template>
@@ -286,17 +295,7 @@ function getRankClass(rank) {
             <CardHeader class="flex flex-row items-center justify-between">
               <div class="flex items-center gap-2">
                 <CardTitle>Hasil SAW (Simple Additive Weighting)</CardTitle>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  @click="
-                    router.get(route('wp.export-pdf'), {
-                      method: form.method,
-                      category: form.category,
-                      weights: form.weights,
-                    })
-                  "
-                >
+                <Button variant="outline" size="sm" @click="exportPdf">
                   Export PDF
                 </Button>
               </div>
@@ -331,17 +330,7 @@ function getRankClass(rank) {
               <div class="flex items-center gap-2">
                 <CardTitle>Hasil Weighted Product</CardTitle>
                 <!-- export pdf -->
-                <Button
-                  variant="outline"
-                  size="sm"
-                  @click="
-                    router.get(route('wp.export-pdf'), {
-                      method: form.method,
-                      category: form.category,
-                      weights: form.weights,
-                    })
-                  "
-                >
+                <Button variant="outline" size="sm" @click="exportPdf">
                   Export PDF
                 </Button>
               </div>
