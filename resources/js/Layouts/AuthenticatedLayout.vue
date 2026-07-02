@@ -98,7 +98,7 @@ function closeMobileSidebar() {
                 )"
             >
                 <Link :href="route('dashboard')" class="flex items-center gap-2 overflow-hidden whitespace-nowrap">
-                    <ApplicationLogo class="block h-8 w-auto shrink-0 fill-current text-gray-800" />
+                    <ApplicationLogo class="block h-8 w-auto shrink-0 text-gray-800" />
                     <span 
                         :class="cn(
                             'text-lg font-bold text-gray-900 transition-all duration-300',
