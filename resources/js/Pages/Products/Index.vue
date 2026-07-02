@@ -186,8 +186,7 @@ function savePriceUpdate() {
             </h2>
         </template>
 
-        <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-4">
+            <div class="mx-auto space-y-4">
                 <!-- Filters -->
                 <Card>
                     <CardContent class="pt-6 flex gap-4 flex-wrap items-end">
@@ -251,7 +250,6 @@ function savePriceUpdate() {
                     />
                 </Card>
             </div>
-        </div>
     </AuthenticatedLayout>
 
     <!-- Add Modal -->

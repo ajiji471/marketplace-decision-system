@@ -148,13 +148,6 @@ const pageTitle = computed(() => {
                 </div>
             </header>
 
-            <!-- Page Heading -->
-            <header class="bg-white shadow-sm border-b border-gray-200" v-if="$slots.header">
-                <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                    <slot name="header" />
-                </div>
-            </header>
-
             <!-- Page Content -->
             <main class="p-4 lg:p-8">
                 <slot />
