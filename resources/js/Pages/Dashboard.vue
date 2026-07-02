@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import Card from '@components/ui/card/Card.vue'
 import CardHeader from '@components/ui/card/CardHeader.vue'
 import CardTitle from '@components/ui/card/CardTitle.vue'
@@ -20,7 +20,7 @@ const props = defineProps({
             totalProducts: 0,
             avgMargin: '0%',
             highMarginProducts: 0,
-            totalCategories: 0,
+            totalCategories: 0
         })
     }
 })
@@ -54,7 +54,7 @@ const topProducts = computed(() => {
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div class="text-2xl font-bold">{{ stats.totalProducts }}</div>
+                        <div class="text-2xl font-bold">{{ props.stats.totalProducts }}</div>
                     </CardContent>
                 </Card>
                 <Card>
@@ -64,7 +64,7 @@ const topProducts = computed(() => {
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div class="text-2xl font-bold">{{ stats.avgMargin }}</div>
+                        <div class="text-2xl font-bold">{{ props.stats.avgMargin }}</div>
                     </CardContent>
                 </Card>
                 <Card>
@@ -74,7 +74,7 @@ const topProducts = computed(() => {
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div class="text-2xl font-bold">{{ stats.highMarginProducts }}</div>
+                        <div class="text-2xl font-bold">{{ props.stats.highMarginProducts }}</div>
                     </CardContent>
                 </Card>
                 <Card>
@@ -84,7 +84,7 @@ const topProducts = computed(() => {
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div class="text-2xl font-bold">{{ stats.totalCategories }}</div>
+                        <div class="text-2xl font-bold">{{ props.stats.totalCategories }}</div>
                     </CardContent>
                 </Card>
             </div>
@@ -111,7 +111,7 @@ const topProducts = computed(() => {
                                 <td class="p-4">Rp{{ formatNumber(p.price_indonesia_idr) }}</td>
                                 <td class="p-4">
                                     <Badge :variant="p.margin_percent > 30 ? 'success' : 'default'">
-                                        {{ p.margin_percent }}%
+                                       {{ p.margin_percent.toFixed(2) }}%
                                     </Badge>
                                 </td>
                             </tr>
