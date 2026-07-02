@@ -1,7 +1,6 @@
 <script setup>
 import { computed } from "vue";
 import { useForm, Head } from "@inertiajs/vue3";
-import { router } from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { cn } from "@/lib/utils";
 import Card from "@/Components/ui/card/Card.vue";
@@ -58,7 +57,7 @@ const totalWeight = computed(() =>
   Object.values(form.weights).reduce((a, b) => a + (b || 0), 0)
 );
 
-// Helper: shadcn-vue slider butuh array
+
 function getSliderValue(key) {
   return [form.weights[key] || 0];
 }
@@ -66,6 +65,19 @@ function getSliderValue(key) {
 function setSliderValue(key, val) {
   form.weights[key] = val[0];
 }
+
+// URL Export PDF
+const exportPdfUrl = computed(() => {
+  const params = new URLSearchParams()
+  params.append('method', form.method)
+  params.append('category', form.category)
+  
+  Object.entries(form.weights).forEach(([key, value]) => {
+    params.append(`weights[${key}]`, value)
+  })
+  
+  return route('spk.export-pdf') + '?' + params.toString()
+})
 
 // Transform results
 const sawResults = computed(() => {
@@ -171,15 +183,6 @@ function getRankClass(rank) {
       ? "bg-orange-100 text-orange-700"
       : "bg-muted text-muted-foreground"
   );
-}
-function exportPdf() {
-    const params = new URLSearchParams({
-        method: form.method,
-        category: form.category,
-        weights: JSON.stringify(form.weights),
-    }).toString()
-    
-    window.open(route('spk.export-pdf') + '?' + params, '_blank')
 }
 </script>
 
@@ -295,9 +298,13 @@ function exportPdf() {
             <CardHeader class="flex flex-row items-center justify-between">
               <div class="flex items-center gap-2">
                 <CardTitle>Hasil SAW (Simple Additive Weighting)</CardTitle>
-                <Button variant="outline" size="sm" @click="exportPdf">
+                <a
+                  :href="exportPdfUrl"
+                  target="_blank"
+                  class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3"
+                >
                   Export PDF
-                </Button>
+                </a>
               </div>
               <Badge variant="secondary">{{ sawResults.length }} produk</Badge>
             </CardHeader>
@@ -329,10 +336,13 @@ function exportPdf() {
             <CardHeader class="flex flex-row items-center justify-between">
               <div class="flex items-center gap-2">
                 <CardTitle>Hasil Weighted Product</CardTitle>
-                <!-- export pdf -->
-                <Button variant="outline" size="sm" @click="exportPdf">
+                <a
+                  :href="exportPdfUrl"
+                  target="_blank"
+                  class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3"
+                >
                   Export PDF
-                </Button>
+                </a>
               </div>
               <Badge variant="secondary">{{ wpResults.length }} produk</Badge>
             </CardHeader>
