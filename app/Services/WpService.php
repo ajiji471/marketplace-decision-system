@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Collection;
 
-class WPService {
+class WpService {
     
     protected array $criteriaTypes = [
         'margin_percent' => 'benefit',
@@ -19,8 +19,8 @@ class WPService {
     public function calculate(Collection $products, ?array $weights = null): array {
         $weights = $weights ?? config('spk.default_weights');
         
-        $saw = new SAWService();
-        $matrix = (new \ReflectionMethod($saw, 'buildMatrix'))->invoke($saw, $products);
+        $saw = new SawService();                          // ← UBAH: SAWService → SawService
+        $matrix = $saw->buildMatrix($products);           // ← UBAH: hapus ReflectionMethod, panggil langsung
 
         if (empty($matrix)) return [];
 
@@ -31,7 +31,6 @@ class WPService {
                 $w = $weights[$criteria] ?? 0;
                 $type = $this->criteriaTypes[$criteria];
                 
-                // Untuk cost, gunakan inverse
                 $safeValue = max($value, 0.0001);
                 if ($type === 'cost') {
                     $safeValue = 1 / $safeValue;

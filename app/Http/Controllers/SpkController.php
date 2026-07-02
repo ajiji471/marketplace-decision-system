@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Services\SAWService;
-use App\Services\WPService;
+use App\Services\SawService;
+use App\Services\WpService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -62,13 +62,13 @@ class SpkController extends Controller
         $response = [];
 
         if (in_array($validated['method'], ['saw', 'both'])) {
-            $sawService = new SAWService();
+            $sawService = new SawService();
             $sawResults = $sawService->calculate($products, $validated['weights'] ?? null);
             $response['saw'] = array_slice($sawResults, 0, $limit);
         }
 
         if (in_array($validated['method'], ['wp', 'both'])) {
-            $wpService = new WPService();
+            $wpService = new WpService();
             $wpResults = $wpService->calculate($products, $validated['weights'] ?? null);
             $response['wp'] = array_slice($wpResults, 0, $limit);
         }

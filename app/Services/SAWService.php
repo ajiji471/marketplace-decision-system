@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\Product;
 use Illuminate\Support\Collection;
 
-class SAWService {
+class SawService {
     
     protected array $criteriaTypes = [
         'margin_percent' => 'benefit',
@@ -45,7 +45,7 @@ class SAWService {
         return $results;
     }
 
-    protected function buildMatrix(Collection $products): array {
+    public function buildMatrix(Collection $products): array {  // ← UBAH: protected → public
         $matrix = [];
         
         foreach ($products as $product) {
