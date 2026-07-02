@@ -12,3 +12,6 @@ Aplikasi System Penunjang Keputusan
 
 # update seed
     php artisan migrate:fresh --seed
+
+# add component
+    npx shadcn-vue@latest add [component shadcn]
