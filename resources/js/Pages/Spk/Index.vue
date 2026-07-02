@@ -17,7 +17,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/Components/ui/select'
-import Slider from '@/Components/ui/slider/Slider.vue'
+import { Slider } from '@/Components/ui/slider'
 import DataTable from '@/Components/DataTable.vue'
 
 const props = defineProps({
@@ -182,7 +182,7 @@ function getRankClass(rank) {
                             <div class="flex gap-4 flex-wrap items-end">
                                 <!-- Metode -->
                                 <div class="flex flex-col gap-1">
-                                    <label class="text-sm font-medium">Metode:</label>
+                                    <label class="text-sm font-medium mb-1 block">Metode:</label>
                                     <Select v-model="form.method">
                                         <SelectTrigger class="w-40">
                                             <SelectValue placeholder="Pilih metode" />
@@ -196,23 +196,33 @@ function getRankClass(rank) {
                                 </div>
 
                                 <!-- Kategori -->
-                                <div class="flex flex-col gap-1">
-                                    <label class="text-sm font-medium">Kategori:</label>
-                                    <Select v-model="form.category">
-                                        <SelectTrigger class="w-40">
-                                            <SelectValue placeholder="Semua Kategori" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="">Semua</SelectItem>
-                                            <SelectItem 
-                                                v-for="cat in categories" 
-                                                :key="cat" 
-                                                :value="cat"
-                                            >
-                                                {{ cat }}
-                                            </SelectItem>
-                                        </SelectContent>
-                                    </Select>
+                                <div class="flex items-end gap-2">
+                                    <div>
+                                        <label class="text-sm font-medium mb-1 block">Kategori:</label>
+                                        <Select v-model="form.category">
+                                            <SelectTrigger class="w-40">
+                                                <SelectValue placeholder="Semua Kategori" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem
+                                                    v-for="cat in categories"
+                                                    :key="cat"
+                                                    :value="cat"
+                                                >
+                                                    {{ cat }}
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                    <Button
+                                        v-if="form.category"
+                                        variant="ghost"
+                                        size="sm"
+                                        class="mb-0.5"
+                                        @click="form.category = ''"
+                                    >
+                                        Reset
+                                    </Button>
                                 </div>
 
                                 <Button @click="calculate" :disabled="isLoading">
@@ -234,7 +244,12 @@ function getRankClass(rank) {
                                             <label class="text-sm">{{ c.label }}</label>
                                             <span class="text-xs text-muted-foreground uppercase">{{ c.type }}</span>
                                         </div>
-                                        <Slider v-model="form.weights[c.key]" />
+                                        <Slider
+                                            v-model="form.weights[c.key]"
+                                            :max="1"
+                                            :step="0.01"
+                                            :min="0"
+                                        />
                                         <div class="text-xs text-right text-muted-foreground">
                                             {{ (form.weights[c.key] || 0).toFixed(2) }}
                                         </div>
