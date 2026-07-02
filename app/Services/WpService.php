@@ -19,8 +19,8 @@ class WpService {
     public function calculate(Collection $products, ?array $weights = null): array {
         $weights = $weights ?? config('spk.default_weights');
         
-        $saw = new SawService();                          // ← UBAH: SAWService → SawService
-        $matrix = $saw->buildMatrix($products);           // ← UBAH: hapus ReflectionMethod, panggil langsung
+        $saw = new SawService();
+        $matrix = $saw->buildMatrix($products);
 
         if (empty($matrix)) return [];
 
@@ -39,8 +39,11 @@ class WpService {
                 $score *= pow($safeValue, abs($w));
             }
             
+            $product = $products->firstWhere('id', $productId);
+            
             $results[] = [
                 'product_id' => $productId,
+                'product' => $product ? ['name' => $product->name] : null,
                 'score' => round($score, 6),
                 'details' => $values,
             ];

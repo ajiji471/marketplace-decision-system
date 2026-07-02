@@ -31,8 +31,12 @@ class SawService {
             foreach ($values as $criteria => $value) {
                 $score += $value * ($weights[$criteria] ?? 0);
             }
+            
+            $product = $products->firstWhere('id', $productId);
+            
             $results[] = [
                 'product_id' => $productId,
+                'product' => $product ? ['name' => $product->name] : null,
                 'score' => round($score, 4),
                 'details' => $matrix[$productId],
             ];
@@ -45,7 +49,7 @@ class SawService {
         return $results;
     }
 
-    public function buildMatrix(Collection $products): array {  // ← UBAH: protected → public
+    public function buildMatrix(Collection $products): array {
         $matrix = [];
         
         foreach ($products as $product) {
