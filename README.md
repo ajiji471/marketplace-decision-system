@@ -7,5 +7,8 @@ Aplikasi System Penunjang Keputusan
 # install package npm
     npm install
 
-# run seeded
+# run seeder
     php artisan db:seed
+
+# update seed
+    php artisan migrate:fresh --seed
