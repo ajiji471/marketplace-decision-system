@@ -13,7 +13,7 @@ class ProductController extends Controller
         $query = Product::with(['marketplaceData', 'priceHistories']);
 
         if ($request->filled('category')) {
-            $query->where('category', 'like', '%' . $request->category . '%');
+            $query->where('category', $request->category);
         }
 
         $perPage = min((int) $request->input('per_page', 10), 100);
@@ -49,12 +49,21 @@ class ProductController extends Controller
             $products->setCollection($filtered->values());
         }
 
+        // Ambil kategori unik dari database
+        $categories = Product::select('category')
+            ->distinct()
+            ->whereNotNull('category')
+            ->pluck('category')
+            ->sort()
+            ->values();
+
         return Inertia::render('Products/Index', [
             'products' => $products,
             'filters' => [
                 'category' => $request->category,
                 'min_margin' => $request->min_margin
-            ]
+            ],
+            'categories' => $categories
         ]);
     }
 
@@ -80,7 +89,7 @@ class ProductController extends Controller
                 'marketplace_data' => $product->marketplaceData->map(function ($mp) {
                     return [
                         'id' => $mp->id,
-                        'marketplace' => $mp->marketplace_name ?? $mp->marketplace,
+                        'marketplace' => $mp->marketplace,
                         'current_price' => (float) ($mp->current_price ?? 0),
                         'sold_count' => (int) ($mp->sold_count ?? 0),
                         'rating' => (float) ($mp->rating ?? 0)

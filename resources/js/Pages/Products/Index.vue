@@ -11,6 +11,15 @@ import Badge from '@components/ui/badge/Badge.vue'
 import DataTable from '@components/DataTable.vue'
 import Pagination from '@components/ui/pagination/Pagination.vue'
 
+// shadcn-vue Select imports
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue
+} from '@components/ui/select'
+
 // shadcn-vue Dialog imports
 import {
     Dialog,
@@ -40,6 +49,10 @@ const props = defineProps({
             category: '',
             min_margin: ''
         })
+    },
+    categories: {
+        type: Array,
+        default: () => []
     }
 })
 
@@ -116,32 +129,38 @@ const getMarginVariant = (margin) => {
 }
 
 function applyFilters() {
-    router.get(route('products'), {
-        category: filterForm.category,
-        min_margin: filterForm.min_margin
-    }, {
+    const params = {}
+    if (filterForm.category) params.category = filterForm.category
+    if (filterForm.min_margin) params.min_margin = filterForm.min_margin
+
+    router.get(route('products'), params, {
         preserveState: true,
         preserveScroll: true
     })
 }
 
+function resetCategory() {
+    filterForm.category = ''
+    applyFilters()
+}
+
 function handlePageChange(page) {
-    router.get(route('products'), {
-        page: page,
-        category: filterForm.category,
-        min_margin: filterForm.min_margin
-    }, {
+    const params = { page }
+    if (filterForm.category) params.category = filterForm.category
+    if (filterForm.min_margin) params.min_margin = filterForm.min_margin
+
+    router.get(route('products'), params, {
         preserveState: true,
         preserveScroll: true
     })
 }
 
 function handlePerPageChange(perPage) {
-    router.get(route('products'), {
-        per_page: perPage,
-        category: filterForm.category,
-        min_margin: filterForm.min_margin
-    }, {
+    const params = { per_page: perPage }
+    if (filterForm.category) params.category = filterForm.category
+    if (filterForm.min_margin) params.min_margin = filterForm.min_margin
+
+    router.get(route('products'), params, {
         preserveState: true,
         preserveScroll: true
     })
@@ -199,13 +218,36 @@ function savePriceUpdate() {
             <!-- Filters -->
             <Card>
                 <CardContent class="pt-6 flex gap-4 flex-wrap items-end">
-                    <div>
-                        <label class="text-sm font-medium mb-1 block">Kategori</label>
-                        <Input
-                            v-model="filterForm.category"
-                            placeholder="Filter kategori..."
-                            class="w-48"
-                        />
+                    <div class="flex items-end gap-2">
+                        <div>
+                            <label class="text-sm font-medium mb-1 block">Kategori</label>
+                            <Select
+                                v-model="filterForm.category"
+                                @update:model-value="applyFilters"
+                            >
+                                <SelectTrigger class="w-48">
+                                    <SelectValue placeholder="Pilih kategori..." />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem
+                                        v-for="cat in categories"
+                                        :key="cat"
+                                        :value="cat"
+                                    >
+                                        {{ cat }}
+                                    </SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <Button
+                            v-if="filterForm.category"
+                            variant="ghost"
+                            size="sm"
+                            class="mb-0.5"
+                            @click="resetCategory"
+                        >
+                            Reset
+                        </Button>
                     </div>
                     <div>
                         <label class="text-sm font-medium mb-1 block">Min Margin (%)</label>
@@ -246,7 +288,7 @@ function savePriceUpdate() {
                             size="sm"
                             @click.stop="editPrice(item)"
                         >
-                            Update Harga
+                            Update
                         </Button>
                     </template>
                 </DataTable>
@@ -279,7 +321,20 @@ function savePriceUpdate() {
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="text-sm font-medium">Kategori</label>
-                        <Input v-model="newProduct.category" />
+                        <Select v-model="newProduct.category">
+                            <SelectTrigger>
+                                <SelectValue placeholder="Pilih kategori..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem
+                                    v-for="cat in categories"
+                                    :key="cat"
+                                    :value="cat"
+                                >
+                                    {{ cat }}
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
                     </div>
                     <div>
                         <label class="text-sm font-medium">Subkategori</label>
