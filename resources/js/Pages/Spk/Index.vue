@@ -17,7 +17,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/Components/ui/select'
-import { Slider } from '@/Components/ui/slider'
+import Slider from '@/Components/ui/slider/Slider.vue'
 import DataTable from '@/Components/DataTable.vue'
 
 const props = defineProps({
@@ -57,6 +57,15 @@ const isLoading = computed(() => form.processing)
 const totalWeight = computed(() => 
     Object.values(form.weights).reduce((a, b) => a + (b || 0), 0)
 )
+
+// Helper: shadcn-vue slider butuh array
+function getSliderValue(key) {
+    return [form.weights[key] || 0]
+}
+
+function setSliderValue(key, val) {
+    form.weights[key] = val[0]
+}
 
 // Transform results
 const sawResults = computed(() => {
@@ -245,7 +254,8 @@ function getRankClass(rank) {
                                             <span class="text-xs text-muted-foreground uppercase">{{ c.type }}</span>
                                         </div>
                                         <Slider
-                                            v-model="form.weights[c.key]"
+                                            :model-value="getSliderValue(c.key)"
+                                            @update:model-value="(val) => setSliderValue(c.key, val)"
                                             :max="1"
                                             :step="0.01"
                                             :min="0"
