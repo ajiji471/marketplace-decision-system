@@ -128,22 +128,27 @@ resources
  │  │  └─ GuestLayout.vue
  │  ├─ lib
  │  │  └─ utils.js
- │  └─ Pages
- │     ├─ Auth
- │     │  ├─ ConfirmPassword.vue
- │     │  ├─ ForgotPassword.vue
- │     │  ├─ Login.vue
- │     │  ├─ Register.vue
- │     │  ├─ ResetPassword.vue
- │     │  └─ VerifyEmail.vue
- │     ├─ Profile
- │     │  ├─ Partials
- │     │  │  ├─ DeleteUserForm.vue
- │     │  │  ├─ UpdatePasswordForm.vue
- │     │  │  └─ UpdateProfileInformationForm.vue
- │     │  └─ Edit.vue
- │     ├─ Dashboard.vue
- │     └─ Welcome.vue
+    ├─ Pages
+        ┣ Auth
+        ┃ ┣ ConfirmPassword.vue
+        ┃ ┣ ForgotPassword.vue
+        ┃ ┣ Login.vue
+        ┃ ┣ Register.vue
+        ┃ ┣ ResetPassword.vue
+        ┃ ┗ VerifyEmail.vue
+        ┣ Products
+        ┃ ┣ Index.vue
+        ┃ ┗ Show.vue
+        ┣ Profile
+        ┃ ┣ Partials
+        ┃ ┃ ┣ DeleteUserForm.vue
+        ┃ ┃ ┣ UpdatePasswordForm.vue
+        ┃ ┃ ┗ UpdateProfileInformationForm.vue
+        ┃ ┗ Edit.vue
+        ┣ Spk
+        ┃ ┗ Index.vue
+        ┣ Dashboard.vue
+        ┗ Welcome.vue
 
 [Content truncated for brevity - middle sections remain the same]
 

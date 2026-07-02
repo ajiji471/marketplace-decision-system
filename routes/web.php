@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SpkController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -24,9 +25,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
     Route::patch('/products/{product}/price', [ProductController::class, 'updatePrice'])->name('products.update-price');
 
-    Route::get('/spk', function () {
-        return Inertia::render('Spk/Index');
-    })->name('spk');
+    // SPK Routes (Inertia)
+    Route::get('/spk', [SpkController::class, 'index'])->name('spk');
+    Route::post('/spk', [SpkController::class, 'calculate'])->name('spk.calculate');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
