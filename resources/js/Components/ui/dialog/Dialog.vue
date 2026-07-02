@@ -1,19 +1,23 @@
+<template>
+    <Teleport to="body">
+        <Transition name="fade">
+            <div v-if="open" class="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" @click.self="close">
+                <div class="bg-background rounded-lg shadow-lg max-w-lg w-full max-h-[90vh] overflow-y-auto">
+                    <slot />
+                </div>
+            </div>
+        </Transition>
+    </Teleport>
+</template>
+
 <script setup>
-import { DialogRoot, useForwardPropsEmits } from "reka-ui";
+defineProps({ open: Boolean })
+const emit = defineEmits(['update:open'])
 
-const props = defineProps({
-  open: { type: Boolean, required: false },
-  defaultOpen: { type: Boolean, required: false },
-  modal: { type: Boolean, required: false },
-  unmountOnHide: { type: Boolean, required: false },
-});
-const emits = defineEmits(["update:open"]);
-
-const forwarded = useForwardPropsEmits(props, emits);
+const close = () => emit('update:open', false)
 </script>
 
-<template>
-  <DialogRoot v-slot="slotProps" data-slot="dialog" v-bind="forwarded">
-    <slot v-bind="slotProps" />
-  </DialogRoot>
-</template>
+<style scoped>
+.fade-enter-active, .fade-leave-active { transition: opacity 0.2s; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
+</style>
