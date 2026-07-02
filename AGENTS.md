@@ -52,7 +52,6 @@ app
  ┃ ┣ PriceHistory.php
  ┃ ┣ Product.php
  ┃ ┗ User.php
- ┃ ┗ User.php
  ┣ Providers
  ┃ ┗ AppServiceProvider.php
  ┗ Services
@@ -156,7 +155,7 @@ resources
 |-------|----------|
 | shadcn component not showing / greyed out | Ensure `@import \"tailwindcss\"` is in `app.css` and there is no conflict with old PostCSS config. |
 | Form dirty state not working with shadcn Checkbox/Switch | Use a hidden native input or `useForm()` with manual tracking. |
-| Ziggy route not recognized | Ensure `ziggy-js` alias is in `vite.config.ts` and `ZiggyVue` plugin is installed. |
+| Ziggy route not recognized | Ensure `ziggy-js` alias is in `vite.config.js` and `ZiggyVue` plugin is installed. |
 | Tailwind classes not applied | Remove old `postcss.config.js` if using Tailwind v4. |
 | TypeScript error on Inertia page | Ensure `tsconfig.json` includes `resources/js/**/*.vue` and `resources/js/**/*.ts`. |
 | [inertiajs_vue3.js] Cannot read properties of null (reading 'component') | Check `resources/js/app.js` resolve function - ensure page components are properly imported and have default exports. Add null checks before accessing `page.default.layout`. |
@@ -181,4 +180,4 @@ resources
 
 ---
 
-*Last updated: 2026-07-01*
+*Last updated: 2026-07-02*

@@ -2,7 +2,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { cn } from '@lib/utils'
-import Pagination from './pagination/Pagination.vue'
+import Pagination from '@components/ui/pagination/Pagination.vue'
 
 const props = defineProps({
     columns: {
