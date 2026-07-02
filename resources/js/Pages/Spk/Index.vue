@@ -315,6 +315,7 @@ function getRankClass(rank) {
                             <DataTable
                                 :columns="wpColumns"
                                 :data="wpResults"
+                                :internal-pagination="true"
                                 :internal-per-page="5"
                                 empty-text="Tidak ada hasil WP"
                             >
