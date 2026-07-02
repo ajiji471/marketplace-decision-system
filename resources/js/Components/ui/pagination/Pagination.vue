@@ -3,6 +3,10 @@
 import { computed } from 'vue'
 import Button from '@components/ui/button/Button.vue'
 import Select from '@components/ui/select/Select.vue'
+import SelectTrigger from '@components/ui/select/SelectTrigger.vue'
+import SelectValue from '@components/ui/select/SelectValue.vue'
+import SelectContent from '@components/ui/select/SelectContent.vue'
+import SelectItem from '@components/ui/select/SelectItem.vue'
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-vue-next'
 
 const props = defineProps({
@@ -15,7 +19,7 @@ const props = defineProps({
             total: 0,
             per_page: 10,
             from: 0,
-            to: 0,
+            to: 0
         })
     },
     maxVisible: {
@@ -65,7 +69,6 @@ function handlePerPageChange(value) {
 
         <!-- Navigation -->
         <div class="flex items-center gap-1">
-            <!-- First -->
             <Button
                 variant="outline"
                 size="sm"
@@ -76,7 +79,6 @@ function handlePerPageChange(value) {
                 <ChevronsLeft class="h-4 w-4" />
             </Button>
 
-            <!-- Prev -->
             <Button
                 variant="outline"
                 size="sm"
@@ -87,7 +89,6 @@ function handlePerPageChange(value) {
                 <ChevronLeft class="h-4 w-4" />
             </Button>
 
-            <!-- Page Numbers -->
             <Button
                 v-for="page in visiblePages"
                 :key="page"
@@ -99,7 +100,6 @@ function handlePerPageChange(value) {
                 {{ page }}
             </Button>
 
-            <!-- Next -->
             <Button
                 variant="outline"
                 size="sm"
@@ -110,7 +110,6 @@ function handlePerPageChange(value) {
                 <ChevronRight class="h-4 w-4" />
             </Button>
 
-            <!-- Last -->
             <Button
                 variant="outline"
                 size="sm"
@@ -123,22 +122,25 @@ function handlePerPageChange(value) {
         </div>
 
         <!-- Per Page Selector -->
-        <div class="flex items-center gap-2">
-            <span class="text-sm text-muted-foreground">Per halaman:</span>
-            <Select 
-                :model-value="String(meta.per_page || 10)"
-                @update:model-value="handlePerPageChange"
-                class="w-20"
-            >
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-            </Select>
-        </div>
+<div class="flex items-center gap-2">
+    <span class="text-sm text-muted-foreground">Per halaman:</span>
+    <Select
+        :model-value="String(meta.per_page || 10)"
+        @update:model-value="handlePerPageChange"
+    >
+        <SelectTrigger class="w-16 h-8 text-xs">
+            <SelectValue />
+        </SelectTrigger>
+        <SelectContent class="min-w-0">
+            <SelectItem value="5" class="text-xs px-2 py-1">5</SelectItem>
+            <SelectItem value="10" class="text-xs px-2 py-1">10</SelectItem>
+            <SelectItem value="20" class="text-xs px-2 py-1">20</SelectItem>
+            <SelectItem value="50" class="text-xs px-2 py-1">50</SelectItem>
+        </SelectContent>
+    </Select>
+</div>
     </div>
 
-    <!-- Single page info -->
     <div v-else-if="meta.total > 0" class="flex items-center justify-between px-6 py-4 border-t">
         <span class="text-sm text-muted-foreground">
             Menampilkan {{ meta.total }} data

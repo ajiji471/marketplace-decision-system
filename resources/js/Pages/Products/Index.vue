@@ -8,9 +8,18 @@ import CardContent from '@components/ui/card/CardContent.vue'
 import Button from '@components/ui/button/Button.vue'
 import Input from '@components/ui/input/Input.vue'
 import Badge from '@components/ui/badge/Badge.vue'
-import Dialog from '@components/ui/dialog/Dialog.vue'
 import DataTable from '@components/DataTable.vue'
 import Pagination from '@components/ui/pagination/Pagination.vue'
+
+// shadcn-vue Dialog imports
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle
+} from '@components/ui/dialog'
 
 const props = defineProps({
     products: {
@@ -186,77 +195,83 @@ function savePriceUpdate() {
             </h2>
         </template>
 
-            <div class="mx-auto space-y-4">
-                <!-- Filters -->
-                <Card>
-                    <CardContent class="pt-6 flex gap-4 flex-wrap items-end">
-                        <div>
-                            <label class="text-sm font-medium mb-1 block">Kategori</label>
-                            <Input
-                                v-model="filterForm.category"
-                                placeholder="Filter kategori..."
-                                class="w-48"
-                            />
-                        </div>
-                        <div>
-                            <label class="text-sm font-medium mb-1 block">Min Margin (%)</label>
-                            <Input
-                                v-model.number="filterForm.min_margin"
-                                type="number"
-                                placeholder="Min margin %"
-                                class="w-32"
-                            />
-                        </div>
-                        <Button @click="applyFilters">Filter</Button>
-                        <Button variant="secondary" @click="showAddModal = true">+ Tambah Produk</Button>
-                    </CardContent>
-                </Card>
+        <div class="mx-auto space-y-4">
+            <!-- Filters -->
+            <Card>
+                <CardContent class="pt-6 flex gap-4 flex-wrap items-end">
+                    <div>
+                        <label class="text-sm font-medium mb-1 block">Kategori</label>
+                        <Input
+                            v-model="filterForm.category"
+                            placeholder="Filter kategori..."
+                            class="w-48"
+                        />
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium mb-1 block">Min Margin (%)</label>
+                        <Input
+                            v-model.number="filterForm.min_margin"
+                            type="number"
+                            placeholder="Min margin %"
+                            class="w-32"
+                        />
+                    </div>
+                    <Button @click="applyFilters">Filter</Button>
+                    <Button variant="outline" @click="showAddModal = true">+ Tambah Produk</Button>
+                </CardContent>
+            </Card>
 
-                <!-- DataTable -->
-                <Card>
-                    <DataTable
-                        :columns="columns"
-                        :data="products.data"
-                        :loading="false"
-                        empty-text="Tidak ada data produk"
-                        @row-click="handleRowClick"
-                    >
-                        <template #cell-category="{ value }">
-                            <Badge variant="secondary">{{ value }}</Badge>
-                        </template>
+            <!-- DataTable -->
+            <Card>
+                <DataTable
+                    :columns="columns"
+                    :data="products.data"
+                    :loading="false"
+                    empty-text="Tidak ada data produk"
+                    @row-click="handleRowClick"
+                >
+                    <template #cell-category="{ value }">
+                        <Badge variant="secondary">{{ value }}</Badge>
+                    </template>
 
-                        <template #cell-margin_percent="{ value }">
-                            <Badge :variant="getMarginVariant(value)">
-                                {{ Number(value).toFixed(2) }}%
-                            </Badge>
-                        </template>
+                    <template #cell-margin_percent="{ value }">
+                        <Badge :variant="getMarginVariant(value)">
+                            {{ Number(value).toFixed(2) }}%
+                        </Badge>
+                    </template>
 
-                        <template #cell-actions="{ item }">
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                @click.stop="editPrice(item)"
-                            >
-                                Update Harga
-                            </Button>
-                        </template>
-                    </DataTable>
+                    <template #cell-actions="{ item }">
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            @click.stop="editPrice(item)"
+                        >
+                            Update Harga
+                        </Button>
+                    </template>
+                </DataTable>
 
-                    <!-- Pagination -->
-                    <Pagination
-                        :meta="products"
-                        @page-change="handlePageChange"
-                        @per-page-change="handlePerPageChange"
-                    />
-                </Card>
-            </div>
+                <!-- Pagination -->
+                <Pagination
+                    :meta="products"
+                    @page-change="handlePageChange"
+                    @per-page-change="handlePerPageChange"
+                />
+            </Card>
+        </div>
     </AuthenticatedLayout>
 
-    <!-- Add Modal -->
+    <!-- Add Product Dialog -->
     <Dialog v-model:open="showAddModal">
-        <div class="p-6">
-            <h3 class="text-lg font-semibold mb-4">Tambah Produk Baru</h3>
-            <div class="space-y-4">
+        <DialogContent class="sm:max-w-[600px]">
+            <DialogHeader>
+                <DialogTitle>Tambah Produk Baru</DialogTitle>
+                <DialogDescription>
+                    Isi detail produk baru di bawah ini.
+                </DialogDescription>
+            </DialogHeader>
+
+            <div class="space-y-4 py-4">
                 <div>
                     <label class="text-sm font-medium">Nama Produk</label>
                     <Input v-model="newProduct.name" />
@@ -296,18 +311,25 @@ function savePriceUpdate() {
                     <Input v-model.number="newProduct.weight_kg" type="number" step="0.1" />
                 </div>
             </div>
-            <div class="flex justify-end gap-3 mt-6">
+
+            <DialogFooter>
                 <Button variant="outline" @click="showAddModal = false">Batal</Button>
                 <Button @click="saveProduct">Simpan</Button>
-            </div>
-        </div>
+            </DialogFooter>
+        </DialogContent>
     </Dialog>
 
-    <!-- Update Price Modal -->
+    <!-- Update Price Dialog -->
     <Dialog v-model:open="showPriceModal">
-        <div class="p-6">
-            <h3 class="text-lg font-semibold mb-4">Update Harga: {{ editingProduct?.name }}</h3>
-            <div class="space-y-4">
+        <DialogContent class="sm:max-w-[500px]">
+            <DialogHeader>
+                <DialogTitle>Update Harga</DialogTitle>
+                <DialogDescription>
+                    Update harga untuk {{ editingProduct?.name }}
+                </DialogDescription>
+            </DialogHeader>
+
+            <div class="space-y-4 py-4">
                 <div>
                     <label class="text-sm font-medium">Harga China Baru (CNY)</label>
                     <Input v-model.number="priceUpdate.price_china_cny" type="number" />
@@ -321,10 +343,11 @@ function savePriceUpdate() {
                     <Input v-model="priceUpdate.note" placeholder="e.g. kenaikan harga komponen" />
                 </div>
             </div>
-            <div class="flex justify-end gap-3 mt-6">
+
+            <DialogFooter>
                 <Button variant="outline" @click="showPriceModal = false">Batal</Button>
                 <Button @click="savePriceUpdate">Update</Button>
-            </div>
-        </div>
+            </DialogFooter>
+        </DialogContent>
     </Dialog>
 </template>

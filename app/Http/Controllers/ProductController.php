@@ -58,6 +58,48 @@ class ProductController extends Controller
         ]);
     }
 
+    public function show(Product $product)
+    {
+        $product->load(['marketplaceData', 'priceHistories']);
+
+        return Inertia::render('Products/Show', [
+            'product' => [
+                'id' => $product->id,
+                'name' => $product->name,
+                'category' => $product->category,
+                'subcategory' => $product->subcategory,
+                'price_china_cny' => (float) $product->price_china_cny,
+                'price_indonesia_idr' => (float) $product->price_indonesia_idr,
+                'shipping_cost_idr' => (float) $product->shipping_cost_idr,
+                'tax_estimate_idr' => (float) $product->tax_estimate_idr,
+                'total_cost_from_china' => (float) $product->total_cost_from_china,
+                'margin_percent' => round((float) $product->margin_percent, 2),
+                'margin_absolute' => (float) $product->margin_absolute,
+                'weight_kg' => (float) $product->weight_kg,
+                'source_url_china' => $product->source_url_china,
+                'marketplace_data' => $product->marketplaceData->map(function ($mp) {
+                    return [
+                        'id' => $mp->id,
+                        'marketplace' => $mp->marketplace_name ?? $mp->marketplace,
+                        'current_price' => (float) ($mp->current_price ?? 0),
+                        'sold_count' => (int) ($mp->sold_count ?? 0),
+                        'rating' => (float) ($mp->rating ?? 0)
+                    ];
+                }),
+                'price_history' => $product->priceHistories->map(function ($ph) {
+                    return [
+                        'id' => $ph->id,
+                        'source' => $ph->source,
+                        'price' => (float) $ph->price,
+                        'currency' => $ph->currency,
+                        'note' => $ph->note,
+                        'recorded_at' => $ph->recorded_at
+                    ];
+                })
+            ]
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -89,6 +131,31 @@ class ProductController extends Controller
         ]);
 
         return redirect()->route('products')->with('success', 'Produk ditambahkan');
+    }
+
+    public function update(Request $request, Product $product)
+    {
+        $validated = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'category' => 'sometimes|string|max:100',
+            'subcategory' => 'nullable|string|max:100',
+            'price_china_cny' => 'sometimes|numeric|min:0',
+            'price_indonesia_idr' => 'sometimes|numeric|min:0',
+            'shipping_cost_idr' => 'nullable|numeric|min:0',
+            'tax_estimate_idr' => 'nullable|numeric|min:0',
+            'weight_kg' => 'nullable|numeric|min:0',
+            'source_url_china' => 'nullable|url'
+        ]);
+
+        $product->update($validated);
+
+        return redirect()->route('products')->with('success', 'Produk diperbarui');
+    }
+
+    public function destroy(Product $product)
+    {
+        $product->delete();
+        return redirect()->route('products')->with('success', 'Produk dihapus');
     }
 
     public function updatePrice(Request $request, Product $product)
