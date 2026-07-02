@@ -49,7 +49,6 @@ class ProductController extends Controller
             $products->setCollection($filtered->values());
         }
 
-        // Ambil kategori unik dari database
         $categories = Product::select('category')
             ->distinct()
             ->whereNotNull('category')
@@ -67,9 +66,14 @@ class ProductController extends Controller
         ]);
     }
 
-    public function show(Product $product)
+    public function show(Product $product, Request $request)
     {
-        $product->load(['marketplaceData', 'priceHistories']);
+        $product->load('marketplaceData');
+
+        $priceHistory = $product->priceHistories()
+            ->orderBy('recorded_at', 'desc')
+            ->paginate($request->per_page ?? 10)
+            ->withQueryString();
 
         return Inertia::render('Products/Show', [
             'product' => [
@@ -94,18 +98,9 @@ class ProductController extends Controller
                         'sold_count' => (int) ($mp->sold_count ?? 0),
                         'rating' => (float) ($mp->rating ?? 0)
                     ];
-                }),
-                'price_history' => $product->priceHistories->map(function ($ph) {
-                    return [
-                        'id' => $ph->id,
-                        'source' => $ph->source,
-                        'price' => (float) $ph->price,
-                        'currency' => $ph->currency,
-                        'note' => $ph->note,
-                        'recorded_at' => $ph->recorded_at
-                    ];
                 })
-            ]
+            ],
+            'priceHistory' => $priceHistory
         ]);
     }
 

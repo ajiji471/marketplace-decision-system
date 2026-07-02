@@ -9,11 +9,24 @@ import CardContent from '@components/ui/card/CardContent.vue'
 import Button from '@components/ui/button/Button.vue'
 import Badge from '@components/ui/badge/Badge.vue'
 import Table from '@components/ui/table/Table.vue'
+import Pagination from '@components/ui/pagination/Pagination.vue'
 
 const props = defineProps({
     product: {
         type: Object,
         default: () => null
+    },
+    priceHistory: {
+        type: Object,
+        default: () => ({
+            data: [],
+            current_page: 1,
+            last_page: 1,
+            total: 0,
+            per_page: 10,
+            from: 0,
+            to: 0
+        })
     }
 })
 
@@ -29,6 +42,24 @@ const formatDate = (date) => {
 
 function goBack() {
     router.visit(route('products'))
+}
+
+function handlePageChange(page) {
+    router.get(route('products.show', props.product.id), {
+        page: page
+    }, {
+        preserveState: true,
+        preserveScroll: true
+    })
+}
+
+function handlePerPageChange(perPage) {
+    router.get(route('products.show', props.product.id), {
+        per_page: perPage
+    }, {
+        preserveState: true,
+        preserveScroll: true
+    })
 }
 </script>
 
@@ -124,7 +155,7 @@ function goBack() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="h in product.price_history" :key="h.id" class="border-b hover:bg-muted/50">
+                                    <tr v-for="h in priceHistory.data" :key="h.id" class="border-b hover:bg-muted/50">
                                         <td class="p-4">{{ formatDate(h.recorded_at) }}</td>
                                         <td class="p-4">
                                             <Badge :variant="h.source === 'china' ? 'default' : 'secondary'">
@@ -136,6 +167,13 @@ function goBack() {
                                     </tr>
                                 </tbody>
                             </Table>
+
+                            <!-- Pagination -->
+                            <Pagination
+                                :meta="priceHistory"
+                                @page-change="handlePageChange"
+                                @per-page-change="handlePerPageChange"
+                            />
                         </CardContent>
                     </Card>
                 </div>
