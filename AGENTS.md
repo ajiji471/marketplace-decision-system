@@ -22,7 +22,7 @@
 ## 2. Folder Structure
 
 ```
-scrapping-marketplace/
+marketplace-decision-system/
 app
  ┣ Http
  ┃ ┣ Controllers
@@ -51,6 +51,7 @@ app
  ┃ ┣ MarketplaceData.php
  ┃ ┣ PriceHistory.php
  ┃ ┣ Product.php
+ ┃ ┗ User.php
  ┃ ┗ User.php
  ┣ Providers
  ┃ ┗ AppServiceProvider.php
@@ -84,9 +85,9 @@ database
  ┃ ┣ 0001_01_01_000000_create_users_table.php
  ┃ ┣ 0001_01_01_000001_create_cache_table.php
  ┃ ┣ 0001_01_01_000002_create_jobs_table.php
- ┃ ┣ 2026_06_22_101013_create_products_table.php
- ┃ ┣ 2026_06_22_101632_create_marketplace_data_table.php
- ┃ ┣ 2026_06_22_101756_create_price_histories_table.php
+ ┃ ┣ 2026_07_02_021639_create_products_table.php
+ ┃ ┣ 2026_07_02_022047_create_price_histories_table.php
+ ┃ ┣ 2026_07_02_022204_create_marketplace_data_table.php
  ┃ ┗ 2026_06_22_102547_create_personal_access_tokens_table.php
  ┣ seeders
  ┃ ┗ DatabaseSeeder.php
@@ -96,8 +97,6 @@ resources
  ├─ css
  │  └ app.css
  ├─ js
- │  ├─ api
- │  │  └ client.js
  │  ├─ Components
  │  │  ├─ ui
  │  │  │  ├─ button
@@ -112,19 +111,40 @@ resources
  │  │  │  │  ├─ CardHeader.vue
  │  │  │  │  ├─ CardTitle.vue
  │  │  │  │  └ index.js
- │  │  ├─ Badge.vue
- │  │  ├─ DataTable.vue
- │  │  ├─ Dialog.vue
- │  │  ├─ Input.vue
- │  │  ├─ Pagination.vue
- │  │  ├─ Select.vue
- │  │  ├─ Slider.vue
- │  │  ├─ Table.vue
- │  │  └ Tabs.vue
- │  ├─ ApplicationLogo.vue
- │  ├─ Checkbox.vue
- │  ├─ DangerButton.vue
-```
+ │  │  ├─ ApplicationLogo.vue
+ │  │  ├─ Checkbox.vue
+ │  │  ├─ DangerButton.vue
+ │  │  ├─ Dropdown.vue
+ │  │  ├─ DropdownLink.vue
+ │  │  ├─ InputError.vue
+ │  │  ├─ InputLabel.vue
+ │  │  ├─ Modal.vue
+ │  │  ├─ NavLink.vue
+ │  │  ├─ PrimaryButton.vue
+ │  │  ├─ ResponsiveNavLink.vue
+ │  │  ├─ SecondaryButton.vue
+ │  │  └─ TextInput.vue
+ │  ├─ Layouts
+ │  │  ├─ AuthenticatedLayout.vue
+ │  │  └─ GuestLayout.vue
+ │  ├─ lib
+ │  │  └─ utils.js
+ │  └─ Pages
+ │     ├─ Auth
+ │     │  ├─ ConfirmPassword.vue
+ │     │  ├─ ForgotPassword.vue
+ │     │  ├─ Login.vue
+ │     │  ├─ Register.vue
+ │     │  ├─ ResetPassword.vue
+ │     │  └─ VerifyEmail.vue
+ │     ├─ Profile
+ │     │  ├─ Partials
+ │     │  │  ├─ DeleteUserForm.vue
+ │     │  │  ├─ UpdatePasswordForm.vue
+ │     │  │  └─ UpdateProfileInformationForm.vue
+ │     │  └─ Edit.vue
+ │     ├─ Dashboard.vue
+ │     └─ Welcome.vue
 
 [Content truncated for brevity - middle sections remain the same]
 
@@ -155,7 +175,7 @@ resources
 
 ## 9. Github Project Repository
 
-- [scrapping-marketplace](https://github.com/ajiji471/scrapping-marketplace)
+- [scrapping-marketplace](https://github.com/ajiji471/marketplace-decision-system)
 
 ---
 
