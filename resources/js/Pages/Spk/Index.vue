@@ -194,8 +194,7 @@ function getRankClass(rank) {
       <h2 class="text-xl font-semibold leading-tight text-gray-800">Perhitungan SPK</h2>
     </template>
 
-    <div class="py-12">
-      <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+      <div class="mx-auto ">
         <div class="space-y-6">
           <!-- Configuration -->
           <Card>
@@ -363,7 +362,6 @@ function getRankClass(rank) {
             </CardContent>
           </Card>
         </div>
-      </div>
     </div>
   </AuthenticatedLayout>
 </template>

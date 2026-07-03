@@ -290,6 +290,14 @@ function savePriceUpdate() {
                         >
                             Update
                         </Button>
+                        <!-- hapus -->
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            @click.stop="deleteProduct(item)"
+                        >
+                            Hapus
+                        </Button>
                     </template>
                 </DataTable>
 
