@@ -9,13 +9,13 @@
 | Layer | Technology | Target Version |
 |-------|-----------|----------------|
 | Backend | Laravel | 12.x |
-| Frontend Framework | Vue 3 | 3.5+ (Composition API) |
+| Frontend Framework | Vue 3 | 3.5+  |
 | Bridge | Inertia.js | 2.x |
 | UI Components | shadcn-vue | latest |
 | Styling | Tailwind CSS | v4 |
 | Build Tool | Vite | 6.x |
 | Package Manager | npm / pnpm | — |
-| Language | TypeScript | 5.7+ (recommended) |
+| Language | Javascript| 5.7+ (recommended) |
 
 ---
 

@@ -1,10 +1,11 @@
 <script setup>
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import GuestLayout from '@/Layouts/GuestLayout.vue';
+import { Button } from '@/Components/ui/button';
+import { Input } from '@/Components/ui/input';
+import { Label } from '@/Components/ui/label';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card';
+import { cn } from '@/lib/utils';
 
 const form = useForm({
     name: '',
@@ -24,90 +25,100 @@ const submit = () => {
     <GuestLayout>
         <Head title="Register" />
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="name" value="Name" />
+        <Card class="w-full max-w-md">
+            <CardHeader class="space-y-1">
+                <CardTitle class="text-2xl font-bold text-center">Register</CardTitle>
+                <CardDescription class="text-center">
+                    Buat akun baru untuk mulai menggunakan aplikasi
+                </CardDescription>
+            </CardHeader>
 
-                <TextInput
-                    id="name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.name"
-                    required
-                    autofocus
-                    autocomplete="name"
-                />
+            <CardContent>
+                <form @submit.prevent="submit" class="space-y-4">
+                    <div class="space-y-2">
+                        <Label for="name">Name</Label>
+                        <Input
+                            id="name"
+                            type="text"
+                            placeholder="John Doe"
+                            v-model="form.name"
+                            required
+                            autofocus
+                            autocomplete="name"
+                            :class="cn(form.errors.name && 'border-destructive focus-visible:ring-destructive')"
+                        />
+                        <p v-if="form.errors.name" class="text-sm font-medium text-destructive">
+                            {{ form.errors.name }}
+                        </p>
+                    </div>
 
-                <InputError class="mt-2" :message="form.errors.name" />
-            </div>
+                    <div class="space-y-2">
+                        <Label for="email">Email</Label>
+                        <Input
+                            id="email"
+                            type="email"
+                            placeholder="nama@email.com"
+                            v-model="form.email"
+                            required
+                            autocomplete="username"
+                            :class="cn(form.errors.email && 'border-destructive focus-visible:ring-destructive')"
+                        />
+                        <p v-if="form.errors.email" class="text-sm font-medium text-destructive">
+                            {{ form.errors.email }}
+                        </p>
+                    </div>
 
-            <div class="mt-4">
-                <InputLabel for="email" value="Email" />
+                    <div class="space-y-2">
+                        <Label for="password">Password</Label>
+                        <Input
+                            id="password"
+                            type="password"
+                            placeholder="••••••••"
+                            v-model="form.password"
+                            required
+                            autocomplete="new-password"
+                            :class="cn(form.errors.password && 'border-destructive focus-visible:ring-destructive')"
+                        />
+                        <p v-if="form.errors.password" class="text-sm font-medium text-destructive">
+                            {{ form.errors.password }}
+                        </p>
+                    </div>
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
-                />
+                    <div class="space-y-2">
+                        <Label for="password_confirmation">Confirm Password</Label>
+                        <Input
+                            id="password_confirmation"
+                            type="password"
+                            placeholder="••••••••"
+                            v-model="form.password_confirmation"
+                            required
+                            autocomplete="new-password"
+                            :class="cn(form.errors.password_confirmation && 'border-destructive focus-visible:ring-destructive')"
+                        />
+                        <p v-if="form.errors.password_confirmation" class="text-sm font-medium text-destructive">
+                            {{ form.errors.password_confirmation }}
+                        </p>
+                    </div>
 
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
+                    <Button
+                        type="submit"
+                        class="w-full"
+                        :disabled="form.processing"
+                    >
+                        {{ form.processing ? 'Registering...' : 'Register' }}
+                    </Button>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="new-password"
-                />
-
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel
-                    for="password_confirmation"
-                    value="Confirm Password"
-                />
-
-                <TextInput
-                    id="password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password_confirmation"
-                    required
-                    autocomplete="new-password"
-                />
-
-                <InputError
-                    class="mt-2"
-                    :message="form.errors.password_confirmation"
-                />
-            </div>
-
-            <div class="mt-4 flex items-center justify-end">
-                <Link
-                    :href="route('login')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                    Already registered?
-                </Link>
-
-                <PrimaryButton
-                    class="ms-4"
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                >
-                    Register
-                </PrimaryButton>
-            </div>
-        </form>
+                    <div class="flex items-center justify-center text-sm">
+                        <span class="text-muted-foreground">Already registered?</span>
+                        <Link
+                            :href="route('login')"
+                            class="ml-1 text-muted-foreground underline underline-offset-4 hover:text-primary transition-colors"
+                        >
+                            Log in
+                        </Link>
+                    </div>
+                </form>
+            </CardContent>
+        </Card>
     </GuestLayout>
 </template>
